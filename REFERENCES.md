@@ -52,7 +52,7 @@ OpenAI, *The matrix multiplication exponent is nine fourths*.
 
 ## Outils
 
-- Lean 4 : https://lean-lang.org/ · Web editor : https://lean4web-editor.vercel.app/
+- Lean 4 : https://lean-lang.org/ · Web editor : https://live.lean-lang.org/
 - Mathlib : https://leanprover-community.github.io/
 - GPT-2 small : https://huggingface.co/openai-community/gpt2 (124 M paramètres)
 

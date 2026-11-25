@@ -17,7 +17,7 @@ les trois fichiers compilent sans erreur ni avertissement.
 
 ## Comment tester (zéro installation)
 
-1. Ouvrez <https://lean4web-editor.vercel.app/>
+1. Ouvrez <https://live.lean-lang.org/>
 2. Copiez-collez le contenu d'un fichier dans l'éditeur
 3. Lean vérifie en temps réel — les coches vertes = succès
 
@@ -43,6 +43,6 @@ Voir `openai/math/lean/docs/107.md` (scope document) et `OAI/LinearAlgebra/Spect
 
 ## Liens
 
-- Lean 4 Web Editor : https://lean4web-editor.vercel.app/
+- Lean 4 Web Editor : https://live.lean-lang.org/
 - Mathlib docs : https://leanprover-community.github.io/mathlib_docs/
 - openai/math (GitHub) : https://github.com/openai/math/tree/main/lean
