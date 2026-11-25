@@ -11,6 +11,8 @@ Kit de démonstration pour le Meetup Fastai-FR.
 
 ---
 
+**Meetup : jeudi 10 décembre 2026, 19h00–21h00, en ligne (groupe Fastai-FR).**
+
 ## Ce que contient le kit
 
 | Dossier | Contenu | Ce que ça démontre |
