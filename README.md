@@ -85,6 +85,6 @@ Code : MIT. Voir `ATTRIBUTION.md` pour les sources, les figures et les citations
 | `notebooks/01-04` | ✅ exécutés de bout en bout (nbclient) |
 | `app/simulateur.html` | ✅ JS validé syntaxiquement — à ouvrir dans un navigateur pour le rendu |
 | `app/streamlit_app.py` | ⚠️ non lancé (streamlit non installé ici) — code relu, dépendances dans `requirements.txt` |
-| `lean/*.lean` | ⚠️ **non compilés** (pas de toolchain Lean sur le VPS) — énoncés vérifiés numériquement, à valider dans le Web Editor |
+| `lean/*.lean` | ✅ **compilés** le 25/11/2026 (Lean 4.37.0-rc1 + Mathlib cf28751) |
 | `agents/lean_prover.py` | ⚠️ logique testable en `--checker none`, nécessite une clé API |
 

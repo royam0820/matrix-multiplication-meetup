@@ -2,11 +2,18 @@
 
 ## Fichiers
 
-| Fichier | Contenu | Difficulté |
-|---------|---------|------------|
-| `BasicProofs.lean` | `(a+b)² = a²+2ab+b²` — démo `ring` | ★☆☆ |
-| `Strassen.lean` | Identités scalaires de Strassen (c₁₁, c₁₂, c₂₁, c₂₂) — `ring` pur | ★☆☆ |
-| `MatrixProofs.lean` | Version matricielle 2×2 avec `ext i j; fin_cases` | ★★☆ |
+| Fichier | Contenu | Statut |
+|---------|---------|--------|
+| `BasicProofs.lean` | `(a+b)² = a²+2ab+b²` — démo `ring` | ✅ compilé |
+| `Strassen.lean` | Identités scalaires de Strassen (c₁₁, c₁₂, c₂₁, c₂₂) — `ring` pur | ✅ compilé |
+| `MatrixProofs.lean` | Version matricielle, coefficient par coefficient | ✅ compilé |
+
+**Vérifié le 25 novembre 2026** avec Lean `4.37.0-rc1` et Mathlib (`cf28751`, 25/11/2026) :
+les trois fichiers compilent sans erreur ni avertissement.
+
+    lake env lean lean/BasicProofs.lean   # rc=0
+    lake env lean lean/Strassen.lean      # rc=0
+    lake env lean lean/MatrixProofs.lean  # rc=0
 
 ## Comment tester (zéro installation)
 

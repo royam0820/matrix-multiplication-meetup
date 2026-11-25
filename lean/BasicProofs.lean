@@ -1,11 +1,14 @@
-/-- Preuves Lean 4 / Mathlib de base pour la démo "Quand l'IA réinvente ses propres mathématiques".
-Ces fichiers sont destinés à être ouverts dans le **Lean 4 Web Editor** (https://lean4web-editor.vercel.app/)
-ou compilés localement avec `lake build` après avoir initialisé un projet Mathlib.
-
-STATUT : **NON VÉRIFIÉS DANS CET ENVIRONNEMENT** (pas de toolchain Lean sur le VPS).
-Testez dans le Web Editor AVANT le Meetup. -/
-
 import Mathlib
+
+/-!
+# Preuves de base — démo 5 du Meetup « la révolution du 9/4 »
+
+Fichier vérifié avec Lean 4 + Mathlib (voir `lean/README.md`).
+
+À ouvrir dans le Lean 4 Web Editor, ou compiler avec :
+
+    lake env lean lean/BasicProofs.lean
+-/
 
 /-- Identité élémentaire : (a + b)² = a² + 2ab + b².
     Le tactic `ring` normalise les deux côtés et vérifie l'égalité. -/
