@@ -1,0 +1,11 @@
+# notes de travail (non publiées)
+DEMO_LIVE_NOTES.md
+PLAN_DECK.md
+slides/png/
+out/*.txt
+*.log
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store

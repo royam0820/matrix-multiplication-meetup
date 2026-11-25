@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Simulateur — La révolution du 9/4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --navy: #0D1B2A; --panel: #1B2D42; --cream: #F8F4EE;
+    --gold: #C9A84C; --teal: #1D7A8A; --orange: #E8621A;
+    --muted: #8FA1B3;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, sans-serif;
+    background: var(--cream); color: var(--navy); line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+  header { text-align: center; margin-bottom: 24px; }
+  h1 { font-size: 1.8rem; margin: 0 0 8px; color: var(--navy); }
+  .subtitle { color: var(--muted); font-size: 1rem; }
+  .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(13,27,42,0.08); border: 1px solid #e8e4dc; }
+  .card h2 { margin: 0 0 16px; font-size: 1.2rem; color: var(--panel); }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  label { font-weight: 600; min-width: 180px; color: var(--panel); }
+  input[type=range] { flex: 1; min-width: 200px; accent-color: var(--gold); }
+  .value { font-family: monospace; font-size: 1.1rem; color: var(--gold);
+    background: var(--navy); padding: 4px 10px; border-radius: 6px; min-width: 100px; text-align: right; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .metric { background: var(--navy); color: var(--cream); padding: 16px; border-radius: 8px; text-align: center; }
+  .metric .label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+  .metric .val { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+  .quiz { border-top: 1px solid #e8e4dc; padding-top: 16px; }
+  .q { margin-bottom: 16px; padding: 12px; background: #faf9f6; border-radius: 8px; }
+  .q p { margin: 0 0 8px; font-weight: 600; }
+  .q label { display: block; margin: 4px 0; cursor: pointer; font-weight: 400; min-width: auto; }
+  .q input[type=radio] { accent-color: var(--gold); margin-right: 8px; }
+  .btn { background: var(--navy); color: var(--cream); border: none; padding: 10px 20px;
+    border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600; }
+  .btn:hover { background: var(--panel); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .result { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; }
+  .result.ok { background: #e8f5e9; color: #2e7d32; display: block; }
+  .result.ko { background: #fdeaea; color: #c62828; display: block; }
+  footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 24px; }
+  .exponent-badge { display: inline-block; background: var(--gold); color: var(--navy);
+    padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.85rem; }
+  @media (max-width: 600px) {
+    .container { padding: 16px; }
+    label { min-width: auto; width: 100%; margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Simulateur — La révolution du 9/4</h1>
+    <p class="subtitle">Comparer les complexités théoriques de la multiplication matricielle</p>
+  </header>
+
+  <section class="card">
+    <h2>Taille des matrices</h2>
+    <div class="row">
+      <label for="n">n (côté de la matrice carrée)</label>
+      <input type="range" id="n" min="3" max="15" step="0.1" value="9" oninput="update()">
+      <span class="value" id="nval">10<sup>9</sup></span>
+    </div>
+    <p style="color:var(--muted);font-size:0.9rem;margin:0;">
+      n = 10<sup><span id="nexp">9</span></sup> = <span id="nfull">1 000 000 000</span>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Opérations scalaires théoriques (ordre de grandeur)</h2>
+    <div class="grid" id="metrics">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Rapport par rapport à l'algorithme scolaire</h2>
+    <div class="grid" id="ratios"></div>
+  </section>
+
+  <section class="card quiz">
+    <h2>Quiz interactif — 4 questions</h2>
+    <form id="quiz">
+      <div class="q">
+        <p>1. Combien de multiplications scalaires pour deux matrices 2×2 avec la méthode classique ?</p>
+        <label><input type="radio" name="q1" value="4"> 4</label>
+        <label><input type="radio" name="q1" value="7"> 7</label>
+        <label><input type="radio" name="q1" value="8"> 8</label>
+        <label><input type="radio" name="q1" value="16"> 16</label>
+      </div>
+      <div class="q">
+        <p>2. Quand la taille double, comment évolue le nombre de multiplications de Strassen ?</p>
+        <label><input type="radio" name="q2" value="double"> Il double</label>
+        <label><input type="radio" name="q2" value="x4"> Il est multiplié par 4</label>
+        <label><input type="radio" name="q2" value="x7"> Il est multiplié par 7</label>
+        <label><input type="radio" name="q2" value="x8"> Il est multiplié par 8</label>
+      </div>
+      <div class="q">
+        <p>3. Un meilleur exposant garantit-il une exécution plus rapide sur GPU ?</p>
+        <label><input type="radio" name="q3" value="oui"> Oui</label>
+        <label><input type="radio" name="q3" value="non"> Non</label>
+      </div>
+      <div class="q">
+        <p>4. Une preuve vérifiée par Lean garantit-elle que l'énoncé correspond exactement au problème scientifique initial ?</p>
+        <label><input type="radio" name="q4" value="oui"> Oui</label>
+        <label><input type="radio" name="q4" value="non"> Non</label>
+      </div>
+      <button type="button" class="btn" onclick="checkQuiz()">Valider le quiz</button>
+      <div id="quizResult" class="result"></div>
+    </form>
+  </section>
+
+  <footer>
+    Meetup Fastai-FR — « Quand l'IA réinvente ses propres mathématiques : la révolution du 9/4 »<br>
+    Données : exposants théoriques — pas des mesures de vitesse réelle.
+  </footer>
+</div>
+
+<script>
+const EXPO = {
+  "Scolaire (n³)"        : 3.0,
+  "Strassen 1969"        : Math.log2(7),
+  "Record public 2026"   : 2.371177,
+  "9/4 (OpenAI oct. 2026)": 2.25,
+};
+const NAMES = Object.keys(EXPO);
+const COLORS = ["#8FA1B3", "#1D7A8A", "#E8621A", "#C9A84C"];
+
+function fmt(x) {
+  if (x < 1e6) return x.toLocaleString();
+  return x.toExponential(3).replace('e+', '×10<sup>').replace('e-', '×10<sup>-') + '</sup>';
+}
+function human(n) {
+  if (n < 1e3) return n.toString();
+  if (n < 1e6) return (n/1e3).toFixed(1)+'k';
+  if (n < 1e9) return (n/1e6).toFixed(1)+'M';
+  if (n < 1e12) return (n/1e9).toFixed(1)+'G';
+  return n.toExponential(2);
+}
+
+function update() {
+  const exp = parseFloat(document.getElementById('n').value);
+  const n = Math.pow(10, exp);
+  document.getElementById('nexp').textContent = exp.toFixed(1);
+  document.getElementById('nval').innerHTML = '10<sup>' + exp.toFixed(1) + '</sup>';
+  document.getElementById('nfull').textContent = human(n);
+
+  const metrics = document.getElementById('metrics');
+  const ratios = document.getElementById('ratios');
+  metrics.innerHTML = '';
+  ratios.innerHTML = '';
+
+  const school = Math.pow(n, 3);
+  NAMES.forEach((name, i) => {
+    const w = EXPO[name];
+    const val = Math.pow(n, w);
+    const ratio = school / val;
+    const div = document.createElement('div');
+    div.className = 'metric';
+    div.style.borderLeft = '4px solid ' + COLORS[i];
+    div.innerHTML = '<div class="label">' + name + '</div><div class="val">' + fmt(val) + '</div>';
+    metrics.appendChild(div);
+
+    const rdiv = document.createElement('div');
+    rdiv.className = 'metric';
+    rdiv.style.borderLeft = '4px solid ' + COLORS[i];
+    rdiv.innerHTML = '<div class="label">Gain vs scolaire</div><div class="val">×' + ratio.toFixed(1) + '</div>';
+    ratios.appendChild(rdiv);
+  });
+}
+
+function checkQuiz() {
+  const ans = { q1: '8', q2: 'x7', q3: 'non', q4: 'non' };
+  let score = 0;
+  const form = document.getElementById('quiz');
+  Object.keys(ans).forEach(k => {
+    const sel = form.querySelector('input[name="' + k + '"]:checked');
+    if (sel && sel.value === ans[k]) score++;
+  });
+  const res = document.getElementById('quizResult');
+  res.className = 'result ' + (score === 4 ? 'ok' : 'ko');
+  if (score === 4) {
+    res.innerHTML = '🎉 4/4 — Parfait ! Vous avez compris les points clés.';
+  } else {
+    const explanations = {
+      q1: 'La méthode classique fait 2³ = 8 multiplications pour 2×2.',
+      q2: 'Strassen récursif : T(2n) = 7·T(n) → multiplier par 7 à chaque doublement.',
+      q3: 'Faux. L\'exposant est asymptotique ; les constantes, le cache et BLAS dominent en pratique.',
+      q4: 'Faux. Lean vérifie la logique formelle, pas l\'adéquation au problème réel (specification gap).'
+    };
+    let msg = score + '/4 — Relisez les explications :<br>';
+    Object.keys(ans).forEach(k => {
+      const sel = form.querySelector('input[name="' + k + '"]:checked');
+      if (!sel || sel.value !== ans[k]) msg += '• ' + explanations[k] + '<br>';
+    });
+    res.innerHTML = msg;
+  }
+}
+
+update();
+</script>
+</body>
+</html>
